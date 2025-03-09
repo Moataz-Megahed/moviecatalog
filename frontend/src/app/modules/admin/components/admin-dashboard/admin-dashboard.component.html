@@ -1,0 +1,113 @@
+<div class="container">
+  <h1 class="my-4">Admin Dashboard</h1>
+  
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+  
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  
+  <div *ngIf="!loading && !error">
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="card bg-primary text-white">
+          <div class="card-body">
+            <h5 class="card-title">Total Movies</h5>
+            <p class="card-text display-4">{{ totalMovies }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card bg-success text-white">
+          <div class="card-body">
+            <h5 class="card-title">Total Users</h5>
+            <p class="card-text display-4">{{ totalUsers }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card bg-info text-white">
+          <div class="card-body">
+            <h5 class="card-title">Total Ratings</h5>
+            <p class="card-text display-4">{{ totalRatings }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row mb-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Recent Movies</h5>
+            <a routerLink="/admin/movies" class="btn btn-primary btn-sm">Manage Movies</a>
+          </div>
+          <div class="card-body">
+            <div *ngIf="movies.length === 0" class="alert alert-info">
+              No movies found in the database.
+            </div>
+            
+            <div *ngIf="movies.length > 0" class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Year</th>
+                    <th>IMDB Rating</th>
+                    <th>User Ratings</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let movie of movies">
+                    <td>{{ movie.id }}</td>
+                    <td>{{ movie.title }}</td>
+                    <td>{{ movie.year }}</td>
+                    <td>{{ movie.imdbRating }}</td>
+                    <td>{{ movie.ratings ? movie.ratings.length : 0 }}</td>
+                    <td>
+                      <a [routerLink]="['/movies', movie.id]" class="btn btn-info btn-sm me-1">
+                        <i class="fas fa-eye"></i>
+                      </a>
+                      <button class="btn btn-danger btn-sm" (click)="removeMovie(movie.id)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Admin Actions</h5>
+          </div>
+          <div class="card-body">
+            <div class="d-grid gap-2 d-md-flex">
+              <a routerLink="/admin/movies" class="btn btn-primary">
+                <i class="fas fa-film me-1"></i> Manage Movies
+              </a>
+              <button class="btn btn-secondary" disabled>
+                <i class="fas fa-users me-1"></i> Manage Users
+              </button>
+              <button class="btn btn-secondary" disabled>
+                <i class="fas fa-cog me-1"></i> System Settings
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

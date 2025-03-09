@@ -1,0 +1,106 @@
+<div class="container">
+  <div class="jumbotron text-center mt-5">
+    <h1>Welcome to Movie Catalog</h1>
+    <p class="lead">Browse and rate your favorite movies</p>
+    <hr class="my-4">
+    <p>This application allows you to discover, rate, and review movies from the OMDB database.</p>
+  </div>
+
+  <div class="row mt-5">
+    <!-- Browse Movies card - visible to all users -->
+    <div class="col-md-4 mb-4" *ngIf="!isAdmin">
+      <div class="card h-100">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Browse Movies</h5>
+        </div>
+        <div class="card-body">
+          <p>Explore our collection of movies. Search, filter, and find detailed information about any movie.</p>
+          <a routerLink="/movies" class="btn btn-primary">Browse Movies</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Browse Movies card for admin - wider layout -->
+    <div class="col-md-6 mb-4" *ngIf="isAdmin">
+      <div class="card h-100">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Browse Movies</h5>
+        </div>
+        <div class="card-body">
+          <p>Explore the movie collection. Search, filter, and manage movie information.</p>
+          <a routerLink="/movies" class="btn btn-primary">Browse Movies</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Account card - only visible to non-admin users -->
+    <div class="col-md-4 mb-4" *ngIf="!isAdmin">
+      <div class="card h-100">
+        <div class="card-header bg-success text-white">
+          <h5 class="mb-0">User Account</h5>
+        </div>
+        <div class="card-body">
+          <p>Login to rate movies, create your watchlist, and manage your profile.</p>
+          <div *ngIf="!isLoggedIn">
+            <a routerLink="/auth/login" class="btn btn-success">Login</a>
+            <a routerLink="/auth/register" class="btn btn-outline-success ms-2">Register</a>
+          </div>
+          <div *ngIf="isLoggedIn">
+            <a routerLink="/user/dashboard" class="btn btn-success">My Dashboard</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Dashboard card - only visible to admins -->
+    <div class="col-md-6 mb-4" *ngIf="isAdmin">
+      <div class="card h-100">
+        <div class="card-header bg-info text-white">
+          <h5 class="mb-0">Admin Dashboard</h5>
+        </div>
+        <div class="card-body">
+          <p>Administrators can manage the movie database, add new movies, and monitor user activity.</p>
+          <a routerLink="/admin" class="btn btn-info">Admin Dashboard</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Features card - shown when Admin Panel is not visible -->
+    <div class="col-md-4 mb-4" *ngIf="!isAdmin">
+      <div class="card h-100">
+        <div class="card-header bg-info text-white">
+          <h5 class="mb-0">Features</h5>
+        </div>
+        <div class="card-body">
+          <p>Discover the features of our Movie Catalog:</p>
+          <ul>
+            <li>Search for movies</li>
+            <li>View detailed information</li>
+            <li>Rate and review movies</li>
+            <li>Create your personal watchlist</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4" *ngIf="!isAdmin">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header bg-secondary text-white">
+          <h5 class="mb-0">About This Application</h5>
+        </div>
+        <div class="card-body">
+          <p>This Movie Catalog application is built with:</p>
+          <ul>
+            <li><strong>Frontend:</strong> Angular with Bootstrap</li>
+            <li><strong>Backend:</strong> Spring Boot</li>
+            <li><strong>Database:</strong> SQL database for storing movies and user data</li>
+            <li><strong>External API:</strong> Integration with OMDB API for movie information</li>
+          </ul>
+          <p>The application demonstrates a full-stack implementation with authentication, authorization, and CRUD operations.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

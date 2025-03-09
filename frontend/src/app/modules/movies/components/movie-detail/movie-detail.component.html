@@ -1,0 +1,156 @@
+<div class="container">
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error && movie" class="movie-detail">
+    <div class="row">
+      <div class="col-md-4">
+        <img [src]="movie.poster" class="img-fluid rounded movie-poster" alt="{{ movie.title }}"
+             onerror="this.src='https://via.placeholder.com/300x450?text=No+Image'">
+      </div>
+      <div class="col-md-8">
+        <div class="d-flex justify-content-between align-items-start">
+          <h1>{{ movie.title }} <small class="text-muted">({{ movie.year }})</small></h1>
+          <button *ngIf="isAdmin" class="btn btn-danger" (click)="removeMovie()">
+            <i class="fas fa-trash"></i> Remove
+          </button>
+        </div>
+        
+        <div class="mb-3">
+          <span class="badge bg-secondary me-2">{{ movie.rated }}</span>
+          <span class="badge bg-secondary me-2">{{ movie.runtime }}</span>
+          <span class="badge bg-secondary me-2">{{ movie.genre }}</span>
+          <span class="badge bg-secondary">{{ movie.language }}</span>
+        </div>
+        
+        <div class="mb-3">
+          <div class="d-flex align-items-center">
+            <div class="me-4">
+              <strong>IMDB Rating:</strong>
+              <span class="rating-stars ms-2">
+                <i class="fas fa-star text-warning"></i> {{ movie.imdbRating }} / 10
+              </span>
+            </div>
+            
+            <div *ngIf="movie.ratings && movie.ratings.length > 0">
+              <strong>User Rating:</strong>
+              <span class="rating-stars ms-2">
+                <ng-container *ngFor="let star of [1,2,3,4,5]">
+                  <i class="fas fa-star" 
+                     [ngClass]="{'text-warning': star <= Math.round(movie.averageRating), 'text-muted': star > Math.round(movie.averageRating)}"></i>
+                </ng-container>
+                <span class="ms-2">{{ movie.averageRating | number:'1.1-1' }} / 5 ({{ movie.ratings.length }} votes)</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        <p class="lead">{{ movie.plot }}</p>
+        
+        <div class="mb-3">
+          <strong>Director:</strong> {{ movie.director }}
+        </div>
+        
+        <div class="mb-3">
+          <strong>Writer:</strong> {{ movie.writer }}
+        </div>
+        
+        <div class="mb-3">
+          <strong>Actors:</strong> {{ movie.actors }}
+        </div>
+        
+        <div class="mb-3">
+          <strong>Released:</strong> {{ movie.released }}
+        </div>
+        
+        <div *ngIf="movie.awards" class="mb-3">
+          <strong>Awards:</strong> {{ movie.awards }}
+        </div>
+      </div>
+    </div>
+    
+    <hr class="my-4">
+    
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="mb-0">User Ratings</h3>
+          </div>
+          <div class="card-body">
+            <div *ngIf="movie.ratings && movie.ratings.length > 0" class="ratings-list">
+              <div *ngFor="let rating of movie.ratings" class="card mb-3">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between">
+                    <h5 class="card-title">{{ rating.user.username }}</h5>
+                    <div class="rating-stars">
+                      <ng-container *ngFor="let star of [1,2,3,4,5]">
+                        <i class="fas fa-star" 
+                           [ngClass]="{'text-warning': star <= rating.value, 'text-muted': star > rating.value}"></i>
+                      </ng-container>
+                      <span class="ms-2">({{ rating.value }}/5)</span>
+                    </div>
+                  </div>
+                  <p *ngIf="rating.comment" class="card-text">{{ rating.comment }}</p>
+                  <small class="text-muted">{{ rating.createdAt | date:'medium' }}</small>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!movie.ratings || movie.ratings.length === 0" class="alert alert-info">
+              No ratings yet. Be the first to rate this movie!
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div *ngIf="isLoggedIn" class="rate-movie-form card">
+          <div class="card-header">
+            <h3 class="mb-0">Rate This Movie</h3>
+          </div>
+          <div class="card-body">
+            <div *ngIf="ratingSuccess" class="alert alert-success">
+              Your rating has been submitted successfully!
+            </div>
+            
+            <div *ngIf="ratingError" class="alert alert-danger">
+              {{ ratingError }}
+            </div>
+            
+            <div class="mb-3">
+              <label for="rating" class="form-label">Your Rating</label>
+              <div class="rating-input">
+                <ng-container *ngFor="let star of [1,2,3,4,5]">
+                  <i class="fas fa-star" 
+                     [ngClass]="{'text-warning': star <= userRating, 'text-muted': star > userRating}"
+                     (click)="userRating = star"
+                     style="cursor: pointer; font-size: 1.5rem; margin-right: 5px;"></i>
+                </ng-container>
+                <span class="ms-2">{{ userRating || 0 }}/5</span>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="comment" class="form-label">Your Comment (Optional)</label>
+              <textarea class="form-control" id="comment" rows="3" [(ngModel)]="comment"></textarea>
+            </div>
+            <button class="btn btn-primary" (click)="rateMovie()" [disabled]="ratingSubmitted || !userRating">
+              <span *ngIf="ratingSubmitted" class="spinner-border spinner-border-sm me-1"></span>
+              Submit Rating
+            </button>
+          </div>
+        </div>
+        
+        <div *ngIf="!isLoggedIn" class="alert alert-info">
+          <a routerLink="/auth/login" [queryParams]="{returnUrl: '/movies/' + movie.id}">Log in</a> to rate this movie.
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

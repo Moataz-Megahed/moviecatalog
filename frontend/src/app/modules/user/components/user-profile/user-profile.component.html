@@ -1,0 +1,138 @@
+<div class="container">
+  <h1 class="my-4">User Profile</h1>
+  
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Profile Information</h5>
+        </div>
+        <div class="card-body">
+          <div *ngIf="profileSuccess" class="alert alert-success">
+            Profile updated successfully!
+          </div>
+          
+          <div *ngIf="profileError" class="alert alert-danger">
+            {{ profileError }}
+          </div>
+          
+          <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="username" 
+                formControlName="username"
+                [ngClass]="{'is-invalid': pf['username'].touched && pf['username'].errors}"
+              >
+              <div *ngIf="pf['username'].touched && pf['username'].errors" class="invalid-feedback">
+                <div *ngIf="pf['username'].errors['required']">Username is required</div>
+                <div *ngIf="pf['username'].errors['minlength']">Username must be at least 3 characters</div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input 
+                type="email" 
+                class="form-control" 
+                id="email" 
+                formControlName="email"
+                [ngClass]="{'is-invalid': pf['email'].touched && pf['email'].errors}"
+              >
+              <div *ngIf="pf['email'].touched && pf['email'].errors" class="invalid-feedback">
+                <div *ngIf="pf['email'].errors['required']">Email is required</div>
+                <div *ngIf="pf['email'].errors['email']">Please enter a valid email address</div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Role</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                [value]="currentUser?.role || 'USER'" 
+                disabled
+              >
+              <div class="form-text">Your account role cannot be changed</div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" [disabled]="profileForm.invalid || loading">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+              Update Profile
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Change Password</h5>
+        </div>
+        <div class="card-body">
+          <div *ngIf="passwordSuccess" class="alert alert-success">
+            Password changed successfully!
+          </div>
+          
+          <div *ngIf="passwordError" class="alert alert-danger">
+            {{ passwordError }}
+          </div>
+          
+          <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+            <div class="mb-3">
+              <label for="currentPassword" class="form-label">Current Password</label>
+              <input 
+                type="password" 
+                class="form-control" 
+                id="currentPassword" 
+                formControlName="currentPassword"
+                [ngClass]="{'is-invalid': pwf['currentPassword'].touched && pwf['currentPassword'].errors}"
+              >
+              <div *ngIf="pwf['currentPassword'].touched && pwf['currentPassword'].errors" class="invalid-feedback">
+                <div *ngIf="pwf['currentPassword'].errors['required']">Current password is required</div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="newPassword" class="form-label">New Password</label>
+              <input 
+                type="password" 
+                class="form-control" 
+                id="newPassword" 
+                formControlName="newPassword"
+                [ngClass]="{'is-invalid': pwf['newPassword'].touched && pwf['newPassword'].errors}"
+              >
+              <div *ngIf="pwf['newPassword'].touched && pwf['newPassword'].errors" class="invalid-feedback">
+                <div *ngIf="pwf['newPassword'].errors['required']">New password is required</div>
+                <div *ngIf="pwf['newPassword'].errors['minlength']">New password must be at least 6 characters</div>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirm New Password</label>
+              <input 
+                type="password" 
+                class="form-control" 
+                id="confirmPassword" 
+                formControlName="confirmPassword"
+                [ngClass]="{'is-invalid': pwf['confirmPassword'].touched && pwf['confirmPassword'].errors}"
+              >
+              <div *ngIf="pwf['confirmPassword'].touched && pwf['confirmPassword'].errors" class="invalid-feedback">
+                <div *ngIf="pwf['confirmPassword'].errors['required']">Please confirm your new password</div>
+                <div *ngIf="pwf['confirmPassword'].errors['passwordMismatch']">Passwords do not match</div>
+              </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" [disabled]="passwordForm.invalid || loading">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+              Change Password
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

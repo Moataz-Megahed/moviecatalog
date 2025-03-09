@@ -1,0 +1,53 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+}
+
+.movie-card {
+  transition: transform 0.3s;
+  height: 100%;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.movie-poster {
+  height: 300px;
+  object-fit: cover;
+}
+
+.rating-stars {
+  color: #ffc107;
+}
+
+.btn-primary {
+  background-color: #3f51b5;
+  border-color: #3f51b5;
+}
+
+.btn-primary:hover {
+  background-color: #303f9f;
+  border-color: #303f9f;
+}
+
+.navbar {
+  background-color: #3f51b5;
+}
+
+.navbar-brand, .nav-link {
+  color: white !important;
+}
+
+.page-link {
+  color: #3f51b5;
+}
+
+.page-item.active .page-link {
+  background-color: #3f51b5;
+  border-color: #3f51b5;
+} 

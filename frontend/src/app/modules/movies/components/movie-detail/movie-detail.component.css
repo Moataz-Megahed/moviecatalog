@@ -1,0 +1,34 @@
+.movie-poster {
+  max-height: 500px;
+  width: 100%;
+  object-fit: cover;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.rating-stars {
+  color: #ffc107;
+}
+
+.rating-input {
+  font-size: 2rem;
+  color: #ffc107;
+  cursor: pointer;
+}
+
+.rating-input i {
+  margin-right: 5px;
+}
+
+.ratings-list .card {
+  transition: transform 0.2s;
+}
+
+.ratings-list .card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-rating {
+  font-weight: bold;
+  color: #6c757d;
+} 
